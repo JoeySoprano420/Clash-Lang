@@ -1,0 +1,5 @@
+print "Hello"
+input name
+let x = 7
+if_eq x 7 then print "match"
+loop print "again"
