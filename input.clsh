@@ -1,3 +1,8 @@
+section code
+start:
+    print "Hello from Clash!"
+    exit
+
 print "Hello"
 input name
 let x = 7
