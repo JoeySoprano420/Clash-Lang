@@ -202,6 +202,3 @@ Clash isn’t just a language. It’s an **engineering philosophy**:
 
 From **bootloader to REPL**, **string pool to TLS socket**, and **expression parser to dynamic symbol heap**, **Clash** is the closest you’ll get to holding the CPU’s breath in your hand.
 
-Would you like the **compiler boot chain laid out**, the **GUI expanded to multi-tab**, or the **interpreter VM layer enabled for hot-swap live coding**?
-
-Your monolith, your command.
