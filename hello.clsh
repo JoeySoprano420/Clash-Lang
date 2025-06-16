@@ -1,4 +1,0 @@
-section code
-start:
-    print "Hello from Clash!"
-    exit
