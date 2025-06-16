@@ -60,3 +60,7 @@ while (counter < limit) {
     counter = counter + 1;
 }
 
+fn sum(a, b) {
+  return a + b * 2
+}
+
