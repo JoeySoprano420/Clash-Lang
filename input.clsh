@@ -46,3 +46,17 @@ let x = 2 + 3 * 4
 func add(a, b) { return a + b }
 add(2, 3)
 
+let counter = 0;
+let limit = 5;
+
+while (counter < limit) {
+    print "Looping:";
+    print counter;
+
+    if (counter == 3) {
+        break;
+    }
+
+    counter = counter + 1;
+}
+
