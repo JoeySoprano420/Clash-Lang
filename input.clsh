@@ -28,3 +28,15 @@ while (x < 3) {
 
 return 9 + 2
 
+let x = 5
+{
+  let x = 10
+  print(x) ; prints 10
+}
+print(x) ; prints 5
+
+let result = 2 + 3 * 4
+
+func add(x) { return x + 1 }
+add(4)
+
