@@ -20,3 +20,11 @@ print(f(4))
 
 import "math"
 
+let x = 0
+while (x < 3) { 
+  print(x)
+  let x = x + 1
+}
+
+return 9 + 2
+
