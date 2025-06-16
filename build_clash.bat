@@ -17,3 +17,7 @@ clash.exe
 nasm -f elf clash_exec_forge_full.asm -o clash.o
 ld -m elf_i386 -s -o clash clash.o
 
+@echo off
+nasm -f win32 clash_transpiler_bootstrap.asm -o transpiler.obj
+GoLink transpiler.obj kernel32.dll
+echo [✓] Clash Transpiler Executable Ready: clash.exe
