@@ -9,3 +9,14 @@ print "Hello World"
 if_eq x 5 then print "matched"
 loop print "infinite"
 
+let x: int = 5
+let s: string = "Hello"
+
+input(s)
+print(s)
+
+func f(x: int) { return x + 1 }
+print(f(4))
+
+import "math"
+
