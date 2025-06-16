@@ -40,3 +40,9 @@ let result = 2 + 3 * 4
 func add(x) { return x + 1 }
 add(4)
 
+let x = 2 + 3 * 4
+; → postfix: 2 3 4 * +
+
+func add(a, b) { return a + b }
+add(2, 3)
+
