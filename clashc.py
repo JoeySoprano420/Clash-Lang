@@ -236,3 +236,8 @@ if __name__ == "__main__":
     while True:
         main()
 
+def optimize(ast):
+    for node in ast:
+        if node.type == 'assign' and node.right.type == 'const' and node.right.value == 0:
+            node.right = {'type': 'const', 'value': 0}  # constant folding example
+
