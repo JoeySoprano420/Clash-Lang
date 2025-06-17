@@ -69,3 +69,19 @@ fn sum(a, b) {
   return a + b * 2
 }
 
+start:
+    print "Clashup Compiler Activated!"
+    let x = 0
+    loop:
+        print x
+        let x = x + 1
+        if_eq x 5 then exit
+        goto loop
+
+func add1(n: int) {
+    return n + 1
+}
+
+print add1(7)
+exit
+
