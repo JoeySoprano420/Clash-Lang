@@ -85,3 +85,23 @@ func add1(n: int) {
 print add1(7)
 exit
 
+import "math"
+
+struct Vec2 {
+    x: int
+    y: int
+}
+
+let counter = 0
+while counter < 10 {
+    print counter
+    let counter = counter + 1
+}
+
+func add(a: int, b: int) {
+    return a + b
+}
+
+let result = add(5, 7)
+print result
+
