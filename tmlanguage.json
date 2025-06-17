@@ -1,0 +1,9 @@
+// .vscode/syntax.tmLanguage.json
+{
+  "scopeName": "source.clsh",
+  "patterns": [
+    { "match": "\\b(func|let|while|loop|print|return|if_eq|exit|import|goto)\\b", "name": "keyword.control.clash" },
+    { "match": "\\b(int|string|struct)\\b", "name": "storage.type.clash" },
+    { "match": "\\b([0-9]+)\\b", "name": "constant.numeric.clash" }
+  ]
+}
