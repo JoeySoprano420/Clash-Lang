@@ -190,3 +190,49 @@ if __name__ == "__main__":
     c.compile(src)
     c.write_output(out)
     print(f"✅ Compiled {src} → {out}")
+
+from clashc.lexer import tokenize
+from clashc.parser import parse
+from clashc.codegen import CodeGenerator
+from clashc.optimizer import optimize
+
+import sys
+
+if __name__ == "__main__":
+    src = sys.argv[1] if len(sys.argv) > 1 else "input.clsh"
+    tokens = tokenize(open(src).read())
+    ast = parse(tokens)
+    optimize(ast)
+    gen = CodeGenerator()
+    asm = gen.generate(ast)
+    with open("output.asm", "w") as f:
+        f.write(asm)
+    print("✅ Compilation complete: output.asm")
+
+import os
+import subprocess
+
+def main():
+    print("🔥 Welcome to Clashup Launcher")
+    print("1. Compile input.clsh")
+    print("2. Run binary")
+    print("3. Edit source")
+    print("4. Exit")
+
+    choice = input("Select: ")
+    if choice == "1":
+        os.system("python3 clashc.py input.clsh")
+        os.system("nasm -f elf64 output.asm -o output.o")
+        os.system("ld output.o -o output")
+        print("✅ Compiled")
+    elif choice == "2":
+        os.system("./output")
+    elif choice == "3":
+        os.system("nano input.clsh")
+    else:
+        exit()
+
+if __name__ == "__main__":
+    while True:
+        main()
+
