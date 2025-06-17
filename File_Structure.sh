@@ -17,3 +17,26 @@ Clashup/
 ├── build_windows.bat      # Windows compile/run
 └── output.asm             # Auto-generated
 
+Clashup/
+├── clashc/                          ← Compiler folder
+│   ├── __init__.py
+│   ├── lexer.py
+│   ├── parser.py
+│   ├── ast.py
+│   ├── codegen.py
+│   ├── optimizer.py
+│   └── stdlib/                      ← Mini Clashup stdlib
+│       ├── math.clsh
+│       └── io.clsh
+│
+├── gui_launcher.py                 ← TUI Launcher
+├── clashc.py                       ← CLI Entrypoint
+├── output.asm
+├── input.clsh
+├── build_linux.sh
+├── build_windows.bat
+├── README.md
+└── .vscode/
+    ├── syntax.tmLanguage.json
+    ├── settings.json
+    └── launch.json
