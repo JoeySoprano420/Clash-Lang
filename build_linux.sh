@@ -12,3 +12,5 @@ nasm -f elf64 output.asm -o output.o
 ld output.o -o output
 chmod +x output
 ./output
+
+./build_linux.sh
