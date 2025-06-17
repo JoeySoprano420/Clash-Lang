@@ -8,3 +8,12 @@
 │   └── loop.clsh
 ├── build_clash.bat     # Windows build script (NASM + GoLink)
 ├── README.md
+
+Clashup/
+├── clashc.py              # Clashup compiler
+├── runtime.asm            # Shared low-level syscall helpers
+├── input.clsh             # Clashup source
+├── build_linux.sh         # Linux compile/run
+├── build_windows.bat      # Windows compile/run
+└── output.asm             # Auto-generated
+
