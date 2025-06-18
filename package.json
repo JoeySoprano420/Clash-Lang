@@ -1,0 +1,8 @@
+"build": {
+  "appId": "com.clashup.supreme",
+  "productName": "Clashup Supreme",
+  "files": ["**/*"],
+  "directories": {
+    "output": "dist"
+  }
+}
