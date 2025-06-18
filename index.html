@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Clashup Supreme VM (Web Boot)</title>
+  <script src="https://unpkg.com/v86/build/libv86.js"></script>
+</head>
+<body>
+  <h1>🌀 Clashup Supreme - Web Boot</h1>
+  <div id="screen" style="width:640px;height:400px;background:#000;"></div>
+  <script>
+    var emulator = new V86Starter({
+      wasm_path: "https://unpkg.com/v86/build/v86.wasm",
+      memory_size: 64 * 1024 * 1024,
+      vga_memory_size: 2 * 1024 * 1024,
+      screen_container: document.getElementById("screen"),
+      bios: { url: "https://unpkg.com/v86/build/seabios.bin" },
+      vga_bios: { url: "https://unpkg.com/v86/build/vgabios.bin" },
+      fda: { url: "Clashup_Supreme.img" },
+      autostart: true
+    });
+  </script>
+</body>
+</html>
