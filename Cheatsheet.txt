@@ -1,0 +1,97 @@
+
+
+⸻
+
+🪟 setup_clashup.bat (For Windows)
+
+@echo off
+echo ---------------------------------------
+echo  CLASHUP SETUP - Windows Environment
+echo ---------------------------------------
+
+:: Step 1: Check for Python
+where python >nul 2>&1
+if %errorlevel% neq 0 (
+    echo ❌ Python not found. Please install Python 3.x and try again.
+    exit /b
+)
+
+:: Step 2: Check for NASM
+where nasm >nul 2>&1
+if %errorlevel% neq 0 (
+    echo ❌ NASM assembler not found. Please install NASM and try again.
+    exit /b
+)
+
+:: Step 3: Run Clashup Compiler
+echo ✅ Running clashc.py on input.clsh...
+python clashc.py input.clsh
+
+:: Step 4: Assemble the generated output.asm
+echo ✅ Assembling output.asm with NASM...
+nasm -f win64 output.asm -o output.obj
+
+:: Step 5: Linking with GoLink (if installed)
+where GoLink >nul 2>&1
+if %errorlevel% equ 0 (
+    GoLink /console output.obj
+    echo ✅ Build complete. Run output.exe
+) else (
+    echo ⚠️ GoLink not found. Please link manually or install GoLink.
+)
+
+pause
+
+
+⸻
+
+🐧 setup_clashup.sh (For Linux/macOS)
+
+#!/bin/bash
+echo "---------------------------------------"
+echo "  CLASHUP SETUP - Linux/macOS"
+echo "---------------------------------------"
+
+# Check Python
+if ! command -v python3 &> /dev/null; then
+    echo "❌ Python 3 not found. Please install it."
+    exit 1
+fi
+
+# Check NASM
+if ! command -v nasm &> /dev/null; then
+    echo "❌ NASM not found. Install via: sudo apt install nasm"
+    exit 1
+fi
+
+# Run Clashup Compiler
+echo "✅ Running clashc.py on input.clsh..."
+python3 clashc.py input.clsh
+
+# Assemble with NASM
+echo "✅ Assembling output.asm..."
+nasm -f elf64 output.asm -o output.o
+
+# Link with ld
+echo "✅ Linking with ld..."
+ld output.o -o output
+
+# Run the program
+echo "✅ Build complete. Running output:"
+chmod +x output
+./output
+
+
+⸻
+
+📥 Save Instructions
+	•	Save each script in the Clashup root folder.
+	•	For Windows: Save as setup_clashup.bat and double-click to run.
+	•	For Linux/macOS: Save as setup_clashup.sh, then run:
+
+chmod +x setup_clashup.sh
+./setup_clashup.sh
+
+
+⸻
+
