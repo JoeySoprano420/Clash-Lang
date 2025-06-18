@@ -33,3 +33,5 @@ chmod +x bin/clashup_exec
 cd ClashupInstaller
 chmod +x install.sh
 ./install.sh
+
+bash install.sh
