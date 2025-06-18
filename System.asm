@@ -11282,3 +11282,11 @@ section .bss
 buffer_in: resb 64
 
 
+read_input:
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, buffer_in
+    mov rdx, 64
+    syscall
+    ret
+
