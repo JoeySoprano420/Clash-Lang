@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VACU Codex</title>
+<script>
+function renderCodex(data, parent) {
+    for (let key in data) {
+        let el = document.createElement("div");
+        el.innerHTML = "🔹 " + key;
+        parent.appendChild(el);
+        if (typeof data[key] === "object") {
+            let child = document.createElement("div");
+            child.style.marginLeft = "20px";
+            renderCodex(data[key], child);
+            parent.appendChild(child);
+        }
+    }
+}
+</script>
+</head>
+<body onload="renderCodex({{ codex|tojson }}, document.body)">
+<h2>📖 VACU Codex Explorer</h2>
+</body>
+</html>
