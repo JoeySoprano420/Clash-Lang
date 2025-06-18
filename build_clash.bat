@@ -28,3 +28,4 @@ nasm -f win64 bin\output.asm -o bin\output.obj
 GoLink /console /entry _start bin\output.obj
 clashup_exec.exe
 
+build_windows.bat
