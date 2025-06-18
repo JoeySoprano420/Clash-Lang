@@ -1,0 +1,15 @@
+// clashc.clsh (self-hosted)
+func parse(tokens: string[]) {
+    let idx: int = 0
+    while (idx < len(tokens)) {
+        if_eq tokens[idx] "let" then {
+            parse_let(tokens, idx)
+        }
+        if_eq tokens[idx] "print" then {
+            parse_print(tokens, idx)
+        }
+        let idx = idx + 1
+    }
+}
+func parse_let(tokens: string[], i: int) { /* ... */ }
+func parse_print(tokens: string[], i: int) { /* ... */ }
