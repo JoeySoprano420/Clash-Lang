@@ -17,3 +17,13 @@
   ]
 }
 
+{
+  "name": "MyClashupGame",
+  "entry": "main.clsh",
+  "modules": ["math", "io"],
+  "build": {
+    "type": "elf",
+    "optimize": true
+  }
+}
+
