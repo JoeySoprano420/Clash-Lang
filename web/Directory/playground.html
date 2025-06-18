@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clashup Playground</title>
+</head>
+<body style="background:#111;color:#0f0;font-family:monospace">
+  <h1>🧩 Clashup Playground</h1>
+  <textarea id="code" rows="20" cols="80">print 5</textarea><br>
+  <button onclick="runCode()">Run</button>
+  <pre id="output"></pre>
+  <script>
+    async function runCode() {
+      const code = document.getElementById('code').value;
+      const res = await fetch("/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code })
+      });
+      const text = await res.text();
+      document.getElementById("output").textContent = text;
+    }
+  </script>
+</body>
+</html>
