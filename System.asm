@@ -11240,3 +11240,45 @@ mov rdi, offset Greeter_vtable
 mov rax, [rdi]
 call [rax]
 
+; System.asm — Clashup Standard Runtime
+
+global print_string
+global exit_program
+
+section .text
+
+print_string:
+    mov rax, 1          ; syscall: write
+    mov rdi, 1          ; file: stdout
+    mov rdx, 256        ; max length
+    syscall
+    ret
+
+exit_program:
+    mov rax, 60         ; syscall: exit
+    xor rdi, rdi        ; status 0
+    syscall
+
+; === Future Runtime Hooks ===
+; To be called from compiler-generated .asm
+
+read_input:
+    ; syscall: read from stdin
+    mov rax, 0
+    mov rdi, 0
+    mov rsi, buffer_in
+    mov rdx, 64
+    syscall
+    ret
+
+parse_int:
+    ; Parse ASCII decimal from buffer_in → rax
+    ; (future enhancement)
+    xor rax, rax
+    ; naive parse for now (not implemented)
+    ret
+
+section .bss
+buffer_in: resb 64
+
+
