@@ -35,3 +35,26 @@ def index():
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
+
+import re
+
+def is_safe(code):
+    # Simple sandboxing: reject system commands
+    banned = ['import os', 'subprocess', 'open(', 'eval', 'exec']
+    return not any(bad in code for bad in banned)
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    code = ""
+    output = ""
+    if request.method == "POST":
+        code = request.form["code"]
+        if not is_safe(code):
+            output = "🚫 Unsafe code detected."
+        else:
+            with open("input.clsh", "w") as f:
+                f.write(code)
+            proc = subprocess.run(["python3", "clashc.py", "input.clsh"], capture_output=True, text=True)
+            output = proc.stdout + "\n" + proc.stderr
+    return render_template_string(HTML, code=code, output=output)
+
