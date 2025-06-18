@@ -12,6 +12,7 @@ loop print "again"
 let x = 5
 print "Hello World"
 if_eq x 5 then print "matched"
+
 loop print "infinite"
 
 let x: int = 5
@@ -104,4 +105,19 @@ func add(a: int, b: int) {
 
 let result = add(5, 7)
 print result
+
+func add(a: int, b: int) {
+    return a + b
+}
+
+func say(msg: string) {
+    print msg
+}
+
+print 5
+let x = 0
+while x < 5 {
+    print x
+    let x = x + 1
+}
 
