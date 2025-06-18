@@ -29,3 +29,6 @@ GoLink /console /entry _start bin\output.obj
 clashup_exec.exe
 
 build_windows.bat
+
+cd ClashupInstaller
+install.bat
