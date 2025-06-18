@@ -1,0 +1,10 @@
+<ul id="market"></ul>
+<script>
+fetch("plugins/market_index.json").then(r=>r.json()).then(data=>{
+  data.forEach(p=>{
+    let li = document.createElement("li");
+    li.innerHTML = `<b>${p.plugin_name}</b>: ${p.description} [${p.version}]`;
+    document.getElementById("market").appendChild(li);
+  });
+});
+</script>
