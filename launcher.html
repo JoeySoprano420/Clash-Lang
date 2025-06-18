@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Clashup Launcher</title></head>
+<body style="background:#111;color:#fff;font-family:sans-serif;">
+<h1>🎮 Clashup Supreme Launcher</h1>
+<ul>
+  <li><button onclick="run('gui_launcher.py')">Open IDE</button></li>
+  <li><button onclick="run('arena_client.py')">Multiplayer Arena</button></li>
+  <li><button onclick="run('codex_web.py')">Codex Explorer</button></li>
+</ul>
+<script>
+function run(file) {
+  const { exec } = require('child_process')
+  exec(`python ${file}`)
+}
+</script>
+</body>
+</html>
