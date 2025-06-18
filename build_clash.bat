@@ -21,3 +21,10 @@ ld -m elf_i386 -s -o clash clash.o
 nasm -f win32 clash_transpiler_bootstrap.asm -o transpiler.obj
 GoLink transpiler.obj kernel32.dll
 echo [✓] Clash Transpiler Executable Ready: clash.exe
+
+@echo off
+python src\clashc\main.py examples\hello.clsh
+nasm -f win64 bin\output.asm -o bin\output.obj
+GoLink /console /entry _start bin\output.obj
+clashup_exec.exe
+
