@@ -73,3 +73,7 @@ class ClashupHighlighter(QSyntaxHighlighter):
                 
 self.addTab(CollabTab(), "👥 Live Collab")
 
+dbg = TimelineDebugger()
+dbg.load_code("input.clsh")
+self.addTab(dbg, "🪜 Debugger")
+
