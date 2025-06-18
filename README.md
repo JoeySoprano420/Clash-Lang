@@ -217,3 +217,18 @@ From **bootloader to REPL**, **string pool to TLS socket**, and **expression par
  .o/.exe      .wasm        Runtime
    ↓
  Packager → GUI App / CLI Tool / Server
+
+| Tool               | Description                        |
+| ------------------ | ---------------------------------- |
+| `clashc.py`        | Core Compiler (.clsh → .asm)       |
+| `interpreter.py`   | Dynamic Execution                  |
+| `vm_stack.py`      | Bytecode Virtual Machine           |
+| `wasm_emitter.py`  | WebAssembly Output (text & binary) |
+| `gui_launcher.py`  | ASCII UI                           |
+| `ClashupStudio.py` | Full IDE with debugger & autosave  |
+| `ast_viewer.py`    | Syntax Tree Visualizer             |
+| `gamepad_input.py` | Controller Support                 |
+| `clashx_gui.py`    | Widget Library for UI Apps         |
+| `package.py`       | Deployment Build Tool              |
+
+
