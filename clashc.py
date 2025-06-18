@@ -747,3 +747,33 @@ if __name__ == "__main__":
     code = open("input.clsh").read()
     clash_assistant(code)
 
+import shutil, platform, os
+
+def build_installer():
+    target = "ClashupInstaller"
+    os.makedirs(target, exist_ok=True)
+    shutil.copy("input.clsh", f"{target}/input.clsh")
+    shutil.copy("output.asm", f"{target}/output.asm")
+    shutil.copy("README.md", f"{target}/README.md")
+    shutil.copy("ClashupManual.pdf", f"{target}/ClashupManual.pdf")
+
+    if platform.system() == "Windows":
+        shutil.copy("output.exe", f"{target}/clashup_exec.exe")
+        with open(f"{target}/install.bat", "w") as f:
+            f.write("@echo off\n")
+            f.write("echo Installing Clashup...\n")
+            f.write("copy clashup_exec.exe %SYSTEMROOT%\\System32\\clashup.exe\n")
+            f.write("echo Installed.\n")
+    else:
+        shutil.copy("output", f"{target}/clashup_exec")
+        with open(f"{target}/install.sh", "w") as f:
+            f.write("#!/bin/bash\n")
+            f.write("echo Installing Clashup...\n")
+            f.write("sudo cp clashup_exec /usr/local/bin/clashup\n")
+            f.write("echo Installed.\n")
+
+    print("✅ Installer Build Complete.")
+
+if __name__ == "__main__":
+    build_installer()
+
