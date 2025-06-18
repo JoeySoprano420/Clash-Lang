@@ -577,13 +577,17 @@ gui → widgets
 controller → gamepad
 
 
-.clsh → lexer → parser → AST
-     → optimize → .asm / wasm / bytecode
-     → run / export / embed
+| Feature                      | Status |
+| ---------------------------- | ------ |
+| Online Playground (`/run`)   | ✅      |
+| FastAPI + HTML Frontend      | ✅      |
+| GitHub CI/CD Workflow        | ✅      |
+| Release ZIP Generator        | ✅      |
+| PDF Manual                   | ✅      |
+| Code Wall Chart (Visual Ref) | ✅      |
 
 
 
-pandoc Clashup_CheatSheet.md -o Clashup_WallChart.pdf
-
-
+☑️ Deployment Instructions
+Push all files to github.com/JOEYSOPRANO420/Clashup
 
