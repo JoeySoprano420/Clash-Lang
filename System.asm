@@ -11306,3 +11306,6 @@ strlen_done:
     mov rax, rcx
     ret
 
+mov rdi, msg
+call strlen
+
