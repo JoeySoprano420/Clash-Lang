@@ -200,3 +200,10 @@ func add(a, b) {
 print add(3, 4)
 
 
+func add(a, b) {
+    let result = a + b
+    return result
+}
+
+print add(3, 4)
+
