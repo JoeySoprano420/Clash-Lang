@@ -1115,3 +1115,7 @@ def handle_function_call(name, args):
     code_section.append(f"call {name}")
     code_section.append("call print_int")
 
+generate_func_asm()
+for block in function_asm_blocks.values():
+    code_section.extend(block)
+
