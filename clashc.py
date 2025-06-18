@@ -881,3 +881,105 @@ output_label = tk.Label(root, text="")
 output_label.pack()
 
 root.mainloop()
+
+#!/usr/bin/env python3
+import sys, os
+
+label_count = 0
+variables = {}
+data_labels = {}
+data_section = []
+code_section = []
+
+def next_label():
+    global label_count
+    label_count += 1
+    return f"_label_{label_count}"
+
+def tokenize(line):
+    return line.strip().split()
+
+def parse(tokens):
+    if not tokens:
+        return
+
+    global code_section, data_section
+
+    cmd = tokens[0]
+
+    if cmd == "let":
+        var = tokens[1]
+        val = tokens[3]
+        variables[var] = val
+        code_section.append(f"mov rax, {val}")
+        code_section.append(f"mov [{var}], rax")
+        data_section.append(f"{var}: dq 0")
+
+    elif cmd == "print":
+        msg = ' '.join(tokens[1:]).strip('"')
+        if msg not in data_labels:
+            label = f"msg_{len(data_labels)}"
+            data_labels[msg] = label
+            data_section.append(f"{label}: db \"{msg}\", 10, 0")
+        label = data_labels[msg]
+        code_section.append(f"mov rsi, {label}")
+        code_section.append("call print_string")
+
+    elif cmd == "exit":
+        code_section.append("call exit_program")
+
+    elif cmd == "loop":
+        loop_label = next_label()
+        code_section.append(f"{loop_label}:")
+        parse(tokenize(' '.join(tokens[1:])))
+        code_section.append(f"jmp {loop_label}")
+
+    elif cmd == "if_eq":
+        var = tokens[1]
+        val = tokens[2]
+        then_idx = tokens.index("then")
+        then_cmd = tokens[then_idx + 1:]
+        end_label = next_label()
+        code_section.append(f"mov rax, [{var}]")
+        code_section.append(f"cmp rax, {val}")
+        code_section.append(f"jne {end_label}")
+        parse(then_cmd)
+        code_section.append(f"{end_label}:")
+
+def generate_asm(source_lines):
+    for line in source_lines:
+        tokens = tokenize(line)
+        parse(tokens)
+
+def write_asm(output_file):
+    with open(output_file, "w") as f:
+        f.write("section .data\n")
+        for d in set(data_section):
+            f.write("    " + d + "\n")
+
+        f.write("\nsection .bss\n")
+        for var in variables:
+            f.write(f"    {var}: resq 1\n")
+
+        f.write("\nsection .text\n")
+        f.write("global _start\n")
+        f.write("_start:\n")
+        for line in code_section:
+            f.write("    " + line + "\n")
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: clashc.py <file.clsh>")
+        return
+
+    input_file = sys.argv[1]
+    with open(input_file, "r") as f:
+        source_lines = f.readlines()
+
+    generate_asm(source_lines)
+    write_asm(input_file.replace(".clsh", ".asm"))
+    print("✅ Compilation complete.")
+
+if __name__ == "__main__":
+    main()
+
