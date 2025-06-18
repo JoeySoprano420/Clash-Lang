@@ -30,3 +30,6 @@ ld bin/output.o -o bin/clashup_exec
 chmod +x bin/clashup_exec
 ./bin/clashup_exec
 
+cd ClashupInstaller
+chmod +x install.sh
+./install.sh
