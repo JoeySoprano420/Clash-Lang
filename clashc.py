@@ -848,3 +848,36 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+---
+
+## 🖥️ 5. Playground GUI Code (Minimal TUI Version)
+
+```python
+# clashup_gui.py
+import tkinter as tk
+import subprocess
+
+def compile_clsh():
+    code = editor.get("1.0", tk.END)
+    with open("input.clsh", "w") as f:
+        f.write(code)
+    subprocess.run(["python3", "clashc.py", "input.clsh"])
+    subprocess.run(["nasm", "-f", "elf64", "input.asm", "-o", "input.o"])
+    subprocess.run(["ld", "input.o", "System.o", "-o", "input"])
+    output_label.config(text="✅ Compiled to ./input")
+
+root = tk.Tk()
+root.title("Clashup Playground")
+
+editor = tk.Text(root, height=20, width=80)
+editor.insert("1.0", "start:\n    print \"Hello!\"\n    exit")
+editor.pack()
+
+compile_btn = tk.Button(root, text="Compile", command=compile_clsh)
+compile_btn.pack()
+
+output_label = tk.Label(root, text="")
+output_label.pack()
+
+root.mainloop()
