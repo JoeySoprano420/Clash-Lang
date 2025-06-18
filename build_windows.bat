@@ -21,3 +21,12 @@ build_windows.bat
 
 @echo off
 clashup_exec.exe
+
+@echo off
+echo Setting up Clashup on Windows...
+python clashc.py input.clsh
+nasm -f win64 input.asm -o input.obj
+GoLink.exe /console input.obj System.obj
+echo Done! Output is: input.exe
+pause
+
