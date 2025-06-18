@@ -705,3 +705,9 @@ python3 gui_launcher.py
 
 
 
+For launcher.html:
+✅ Distribute as .exe, .dmg, .AppImage using electron-builder
+
+
+
+
