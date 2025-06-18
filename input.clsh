@@ -167,3 +167,7 @@ while true {
     print y
 }
 
+import "net"
+let data = fetch("http://example.com")
+print data
+
