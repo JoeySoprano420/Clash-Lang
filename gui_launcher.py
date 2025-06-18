@@ -71,3 +71,5 @@ class ClashupHighlighter(QSyntaxHighlighter):
                 self.setFormat(i, length, fmt)
                 i = pattern.indexIn(text, i + length)
                 
+self.addTab(CollabTab(), "👥 Live Collab")
+
