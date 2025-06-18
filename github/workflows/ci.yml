@@ -1,0 +1,31 @@
+name: Clashup Supreme CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y nasm gcc qemu graphviz python3-pyqt5
+        
+    - name: Compile Boot ISO
+      run: |
+        cd boot
+        nasm -f bin clashupos_fat12.asm -o clashupos.img
+        mkfs.vfat -F 12 clashupos.img
+        cd ..
+        xorriso -as mkisofs -b boot/clashupos.img -no-emul-boot -boot-load-size 4 -boot-info-table -o Clashup_Supreme.iso .
+
+    - name: Upload ISO Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: clashup-supreme-iso
+        path: Clashup_Supreme.iso
