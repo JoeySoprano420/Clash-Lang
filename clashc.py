@@ -533,3 +533,17 @@ def list_packages():
         if f.endswith(".clsh"):
             print(f"• {f}")
 
+from clashc.lexer import tokenize
+from clashc.parser import parse
+from interpreter import interpret
+
+src = open("gamescript.clsh").read()
+tokens = tokenize(src)
+ast = parse(tokens)
+interpret(ast)
+
+elif c == "5":
+    os.system("python3 clashgame.py")
+elif c == "6":
+    import pkgman; pkgman.install(input("Install package> "))
+
