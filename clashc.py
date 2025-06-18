@@ -241,3 +241,210 @@ def optimize(ast):
         if node.type == 'assign' and node.right.type == 'const' and node.right.value == 0:
             node.right = {'type': 'const', 'value': 0}  # constant folding example
 
+def tokenize(src):
+    import re
+    tokens = []
+    lines = src.split('\n')
+    for line in lines:
+        line = line.strip()
+        if line and not line.startswith("//"):
+            tokens.append(line)
+    return tokens
+
+from .ast import *
+
+def parse(tokens):
+    ast = []
+    for line in tokens:
+        if line.startswith("print "):
+            ast.append(PrintNode(line[6:].strip()))
+        elif "let" in line:
+            parts = line[4:].split("=")
+            var = parts[0].strip()
+            val = parts[1].strip()
+            ast.append(AssignNode(var, val))
+        elif line.startswith("func"):
+            fn = line[5:].split("(")[0].strip()
+            ast.append(FuncNode(fn))
+        elif line.startswith("while "):
+            cond = line[6:].strip()
+            ast.append(WhileNode(cond))
+        else:
+            ast.append(RawNode(line))
+    return ast
+
+class Node: pass
+
+class PrintNode(Node):
+    def __init__(self, value): self.value = value
+
+class AssignNode(Node):
+    def __init__(self, var, value): self.var = var; self.value = value
+
+class FuncNode(Node):
+    def __init__(self, name): self.name = name
+
+class WhileNode(Node):
+    def __init__(self, condition): self.condition = condition
+
+class RawNode(Node):
+    def __init__(self, text): self.text = text
+
+def generate_header():
+    return [
+        "section .text",
+        "global _start",
+        "_start:"
+    ]
+
+def generate_footer():
+    return [
+        "mov rax, 60", "xor rdi, rdi", "syscall"
+    ]
+
+def CodeGenerator():
+    class Generator:
+        def generate(self, ast):
+            lines = generate_header()
+            for node in ast:
+                if isinstance(node, PrintNode):
+                    lines += [
+                        f"mov rdi, {node.value}",
+                        "call print_int"
+                    ]
+                elif isinstance(node, AssignNode):
+                    lines += [
+                        f"mov rax, {node.value}",
+                        f"mov [{node.var}], rax"
+                    ]
+                elif isinstance(node, RawNode):
+                    lines.append(node.text)
+            lines += generate_footer()
+            return "\n".join(lines)
+    return Generator()
+
+import logging
+from typing import List, Callable, Type
+from dataclasses import dataclass
+
+from dataclasses import dataclass, field
+from typing import Any, List, Optional, Union
+
+@dataclass
+class ASTNode:
+    """Base class for all Abstract Syntax Tree nodes."""
+    node_type: str
+    children: List['ASTNode'] = field(default_factory=list)
+    value: Optional[Union[str, int, float, bool]] = None
+    line: Optional[int] = None
+    column: Optional[int] = None
+
+    def add_child(self, child: 'ASTNode') -> None:
+        self.children.append(child)
+
+    def __str__(self) -> str:
+        val = f", value={self.value}" if self.value is not None else ""
+        pos = f", at line {self.line}, col {self.column}" if self.line is not None else ""
+        return f"{self.node_type}({len(self.children)} children{val}{pos})"
+
+
+# Specific AST node type for assignments.
+@dataclass
+class AssignNode(ASTNode):
+    variable: str
+    value: str
+
+    def __repr__(self) -> str:
+        return f"AssignNode(variable={self.variable!r}, value={self.value!r})"
+
+def optimize_assign_node(node: AssignNode) -> None:
+    """
+    Optimize an AssignNode by applying constant folding.
+
+    Currently, if the assignment's value is the literal "0", a constant fold is performed,
+    though this example is a placeholder and can be extended for other cases.
+    
+    Parameters:
+        node (AssignNode): The assignment node to optimize.
+    """
+    if node.value == "0":
+        original_value = node.value
+        node.value = "0"  # This example folds the constant 0.
+        logging.debug(f"[OPTIMIZE] Constant folded: {original_value} to {node.value} for variable {node.variable}")
+
+def optimize(ast: List[ASTNode]) -> None:
+    """
+    Optimize a list of AST nodes in place.
+
+    The optimizer dispatches nodes to type-specific optimization routines via a dispatch map.
+    This design allows adding new optimizations easily while keeping the core processing loop simple,
+    which is essential for scaling up to large and complex ASTs.
+    
+    Parameters:
+        ast (List[ASTNode]): The abstract syntax tree (AST) represented as a list of nodes.
+    """
+    # Map specific AST node types to their optimizer functions.
+    optimizers: dict[Type[ASTNode], Callable[[ASTNode], None]] = {
+        AssignNode: optimize_assign_node,
+    }
+
+    for node in ast:
+        optimizer = optimizers.get(type(node))
+        if optimizer:
+            try:
+                optimizer(node)
+            except Exception as error:
+                logging.error(f"Error optimizing node {node}: {error}")
+
+if __name__ == "__main__":
+    # Configure logging for development. In production, logging
+    # may be configured differently or through a configuration file.
+    logging.basicConfig(level=logging.DEBUG)
+    
+    # Example usage with a sample AST.
+    ast_example: List[ASTNode] = [
+        AssignNode("x", "0"),
+        AssignNode("y", "1"),
+    ]
+    
+    logging.info("Before optimization:")
+    for node in ast_example:
+        logging.info(node)
+    
+    optimize(ast_example)
+    
+    logging.info("After optimization:")
+    for node in ast_example:
+        logging.info(node)
+
+import os
+while True:
+    print("\n🎮 Clashup GUI Launcher")
+    print("1. Edit Source")
+    print("2. Compile")
+    print("3. Run")
+    print("4. Exit")
+    c = input("Choose> ")
+    if c == "1": os.system("nano input.clsh")
+    elif c == "2": os.system("python3 clashc.py input.clsh")
+    elif c == "3": os.system("./output")
+    elif c == "4": break
+
+from clashc.lexer import tokenize
+from clashc.parser import parse
+from clashc.codegen import CodeGenerator
+from clashc.optimizer import optimize
+
+import sys
+
+if __name__ == "__main__":
+    src = sys.argv[1] if len(sys.argv) > 1 else "input.clsh"
+    tokens = tokenize(open(src).read())
+    ast = parse(tokens)
+    optimize(ast)
+    gen = CodeGenerator()
+    asm = gen.generate(ast)
+    with open("output.asm", "w") as f:
+        f.write(asm)
+    print("✅ output.asm ready")
+
