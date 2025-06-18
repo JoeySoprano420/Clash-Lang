@@ -27,3 +27,12 @@
   }
 }
 
+{
+  "scopeName": "source.clsh",
+  "patterns": [
+    { "match": "\\b(let|print|while|func|return|if_eq|exit|goto|import|struct)\\b", "name": "keyword.control.clash" },
+    { "match": "\\b(int|string|bool)\\b", "name": "storage.type.clash" },
+    { "match": "\\b([0-9]+)\\b", "name": "constant.numeric.clash" }
+  ]
+}
+
