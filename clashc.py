@@ -996,3 +996,14 @@ def emit(line):
     debug(line)
     code_section.append(line)
 
+def optimize():
+    for i, line in enumerate(code_section):
+        if "mov rax," in line and "add rax," in code_section[i+1]:
+            val1 = int(line.split(",")[1])
+            val2 = int(code_section[i+1].split(",")[1])
+            code_section[i] = f"mov rax, {val1 + val2}"
+            code_section[i+1] = "; folded"
+
+def remove_dead_code():
+    code_section[:] = [line for line in code_section if not line.startswith("; dead")]
+
