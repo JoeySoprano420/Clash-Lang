@@ -448,3 +448,88 @@ if __name__ == "__main__":
         f.write(asm)
     print("✅ output.asm ready")
 
+class ClashVM:
+    def __init__(self):
+        self.registers = {'ACC': 0}
+        self.memory = [0] * 1024
+        self.pc = 0
+        self.instructions = []
+
+    def load(self, bytecode):
+        self.instructions = bytecode
+
+    def run(self):
+        while self.pc < len(self.instructions):
+            inst = self.instructions[self.pc]
+            if inst[0] == "LOAD":
+                self.registers['ACC'] = inst[1]
+            elif inst[0] == "ADD":
+                self.registers['ACC'] += inst[1]
+            elif inst[0] == "PRINT":
+                print(self.registers['ACC'])
+            elif inst[0] == "JMP":
+                self.pc = inst[1]
+                continue
+            elif inst[0] == "HLT":
+                break
+            self.pc += 1
+
+def emit_wasm(ast):
+    lines = ["(module"]
+    lines.append("  (import \"env\" \"print\" (func $print (param i32)))")
+    lines.append("  (func $main")
+    for node in ast:
+        if isinstance(node, PrintNode):
+            lines.append(f"    i32.const {node.value}")
+            lines.append(f"    call $print")
+    lines.append("  )")
+    lines.append("  (start $main)")
+    lines.append(")")
+    return "\n".join(lines)
+
+def interpret(ast):
+    env = {}
+    for node in ast:
+        if isinstance(node, AssignNode):
+            env[node.var] = int(node.value)
+        elif isinstance(node, PrintNode):
+            val = env.get(node.value, node.value)
+            print(val)
+
+import pygame
+
+def game_loop():
+    pygame.init()
+    screen = pygame.display.set_mode((640, 480))
+    pygame.display.set_caption("Clashup Game Engine")
+    clock = pygame.time.Clock()
+
+    running = True
+    while running:
+        screen.fill((30, 30, 30))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        pygame.draw.circle(screen, (255, 0, 0), (320, 240), 50)
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+
+import os, shutil
+
+CLASHUP_LIB = "clashc/stdlib/"
+
+def install(pkg):
+    url = f"https://example.com/{pkg}.clsh"
+    content = f"// mock {pkg} module"
+    with open(os.path.join(CLASHUP_LIB, f"{pkg}.clsh"), "w") as f:
+        f.write(content)
+    print(f"✅ Installed {pkg}")
+
+def list_packages():
+    for f in os.listdir(CLASHUP_LIB):
+        if f.endswith(".clsh"):
+            print(f"• {f}")
+
