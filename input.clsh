@@ -159,3 +159,11 @@ func serve(port: int) {
     }
 }
 
+import "controller"
+while true {
+    let x = gamepad_x()
+    let y = gamepad_y()
+    print x
+    print y
+}
+
