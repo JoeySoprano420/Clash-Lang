@@ -42,3 +42,7 @@ module clashup_cpu (
         end
     end
 endmodule
+
+initial begin
+    $readmemh("program.hex", ram);
+end
