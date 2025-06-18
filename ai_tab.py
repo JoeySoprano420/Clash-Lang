@@ -24,3 +24,5 @@ class AIAssistant(QWidget):
         )
         result = response.choices[0].message.content.strip()
         self.code_output.setText(result)
+
+self.addTab(AIAssistant(), "AI Assistant")
