@@ -577,3 +577,9 @@ gui → widgets
 controller → gamepad
 
 
+.clsh → lexer → parser → AST
+     → optimize → .asm / wasm / bytecode
+     → run / export / embed
+
+
+
