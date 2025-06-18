@@ -20,3 +20,5 @@ Clashup/build_linux.sh
 chmod +x build_linux.sh
 ./build_linux.sh
 
+#!/bin/bash
+./clashup_exec
