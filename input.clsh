@@ -121,3 +121,11 @@ while x < 5 {
     let x = x + 1
 }
 
+import "io"
+
+let hp = 10
+while hp > 0 {
+    print hp
+    let hp = hp - 1
+}
+
