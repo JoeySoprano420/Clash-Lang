@@ -30,3 +30,4 @@ GoLink.exe /console input.obj System.obj
 echo Done! Output is: input.exe
 pause
 
+install.bat
