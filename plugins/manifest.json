@@ -1,0 +1,6 @@
+{
+  "plugin_name": "Clashup Physics Engine",
+  "entry": "physics.clshlib",
+  "description": "Adds physics simulation support",
+  "version": "1.0.0"
+}
