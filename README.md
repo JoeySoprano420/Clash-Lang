@@ -666,3 +666,5 @@ start:
 
 
 
+Example Call (BASH):
+python clpm.py fetch math https://raw.githubusercontent.com/JoeySoprano420/Clashup/main/math.clshlib 1.0
