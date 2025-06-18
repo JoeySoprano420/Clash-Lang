@@ -7,3 +7,13 @@
     { "match": "\\b([0-9]+)\\b", "name": "constant.numeric.clash" }
   ]
 }
+
+{
+  "scopeName": "source.clsh",
+  "patterns": [
+    { "match": "\\b(func|let|print|return|if_eq|while)\\b", "name": "keyword.control.clash" },
+    { "match": "\\b(int|string)\\b", "name": "storage.type.clash" },
+    { "match": "\\b([0-9]+)\\b", "name": "constant.numeric.clash" }
+  ]
+}
+
