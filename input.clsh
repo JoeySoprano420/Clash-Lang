@@ -129,3 +129,12 @@ while hp > 0 {
     let hp = hp - 1
 }
 
+from clashc.lexer import tokenize
+from clashc.parser import parse
+from interpreter import interpret
+
+src = open("gamescript.clsh").read()
+tokens = tokenize(src)
+ast = parse(tokens)
+interpret(ast)
+
