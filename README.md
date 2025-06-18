@@ -595,3 +595,36 @@ Push all files to github.com/JOEYSOPRANO420/Clashup
 .clsh → lexer → parser → AST
      → optimize → .asm / wasm / bytecode
      → run / export / embed
+
+
+
+╔═════════════════════════════╗
+║       CLASHUP SYNTAX        ║
+╚═════════════════════════════╝
+
+🧩 Basic Keywords:
+    start:           ← entry point
+    print "text"     ← display text
+    input name       ← input (not implemented)
+    exit             ← end program
+
+🧩 Example:
+    start:
+        print "Hello"
+        exit
+
+🛠 Assembly Translation (NASM):
+    mov rsi, message
+    call print_string
+    call exit_program
+
+🧠 Notes:
+    • All strings auto declared in .data
+    • Entry point is _start
+    • Extend easily with custom commands
+
+💡 Compiler Flow:
+    .clsh → .asm → .o → .exe
+
+
+
