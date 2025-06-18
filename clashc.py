@@ -777,3 +777,74 @@ def build_installer():
 if __name__ == "__main__":
     build_installer()
 
+#!/usr/bin/env python3
+
+import sys, os
+
+def tokenize(line):
+    tokens = line.strip().split()
+    return tokens
+
+def parse(tokens):
+    if not tokens:
+        return ""
+    cmd = tokens[0]
+    if cmd == "print":
+        msg = ' '.join(tokens[1:]).strip('"')
+        label = f"message_{hash(msg) % 10000}"
+        data = f"{label}: db \"{msg}\", 10, 0"
+        code = [
+            f"mov rsi, {label}",
+            "call print_string"
+        ]
+        return code, data
+    elif cmd == "exit":
+        return ["call exit_program"], None
+    elif cmd == "input":
+        var = tokens[1]
+        code = [f"; input placeholder for {var} (not implemented yet)"]
+        return code, None
+    return [f"; unrecognized: {' '.join(tokens)}"], None
+
+def generate_asm(source_lines):
+    code_section = []
+    data_section = []
+    seen_data = set()
+    for line in source_lines:
+        tokens = tokenize(line)
+        code, data = parse(tokens)
+        if code:
+            code_section.extend(code)
+        if data and data not in seen_data:
+            data_section.append(data)
+            seen_data.add(data)
+    return code_section, data_section
+
+def write_asm(code, data, output_file):
+    with open(output_file, "w") as f:
+        f.write("section .data\n")
+        for d in data:
+            f.write("    " + d + "\n")
+        f.write("\nsection .text\n")
+        f.write("global _start\n")
+        f.write("_start:\n")
+        for line in code:
+            f.write("    " + line + "\n")
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: clashc.py <input.clsh>")
+        return
+    input_file = sys.argv[1]
+    output_file = input_file.replace(".clsh", ".asm")
+
+    with open(input_file, "r") as f:
+        source_lines = f.readlines()
+
+    code, data = generate_asm(source_lines)
+    write_asm(code, data, output_file)
+    print(f"✅ Generated {output_file}")
+
+if __name__ == "__main__":
+    main()
+
