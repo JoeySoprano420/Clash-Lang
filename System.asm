@@ -11290,3 +11290,8 @@ read_input:
     syscall
     ret
 
+math_add:
+    mov rax, rdi
+    add rax, rsi
+    ret
+
