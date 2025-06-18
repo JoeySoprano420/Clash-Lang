@@ -591,3 +591,7 @@ controller → gamepad
 ☑️ Deployment Instructions
 Push all files to github.com/JOEYSOPRANO420/Clashup
 
+
+.clsh → lexer → parser → AST
+     → optimize → .asm / wasm / bytecode
+     → run / export / embed
