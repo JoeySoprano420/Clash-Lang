@@ -189,3 +189,6 @@ while x < 5 {
     let x = x + 1
 }
 
+input name
+print name
+
