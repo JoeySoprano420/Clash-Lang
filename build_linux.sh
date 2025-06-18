@@ -14,3 +14,5 @@ chmod +x output
 ./output
 
 ./build_linux.sh
+
+Clashup/build_linux.sh
