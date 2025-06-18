@@ -12,3 +12,27 @@ Permission is hereby granted to anyone to use, modify, compile, or redistribute 
 - Derivative works remain open-source under this same license.
 
 This software is provided "as is", without warranty.
+
+
+
+name: Clashup CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-clashup:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install requirements
+      run: pip install -r requirements.txt
+    - name: Run Playground Server Test
+      run: python -m clashc.main tests/test.clsh
