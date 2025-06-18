@@ -717,3 +717,33 @@ def package_project():
         shutil.copy("output.exe", f"{target}/clashup_exec.exe")
     print(f"📦 Packaged to: {target}/")
 
+from clashc.lexer import tokenize
+from clashc.parser import parse
+from clashc.optimizer import optimize
+from clashc.codegen import CodeGenerator
+
+def clash_assistant(source_code):
+    print("🧠 Clashup Trainer Activated...")
+    try:
+        tokens = tokenize(source_code)
+        print(f"🔍 {len(tokens)} tokens identified.")
+        ast = parse(tokens)
+        print(f"🌳 AST built with {len(ast)} nodes.")
+        optimize(ast)
+        print(f"⚙️ Optimization complete.")
+        gen = CodeGenerator()
+        asm = gen.generate(ast)
+        print(f"💾 Assembly output prepared.")
+        print("🎯 You can now run or debug.")
+    except Exception as e:
+        print("❌ ERROR:")
+        print(str(e))
+        if "token" in str(e):
+            print("📘 Hint: Check your syntax (missing quotes, colons, or parens).")
+        if "assign" in str(e):
+            print("📘 Hint: Use `let x = 5`, not just `x = 5`.")
+
+if __name__ == "__main__":
+    code = open("input.clsh").read()
+    clash_assistant(code)
+
