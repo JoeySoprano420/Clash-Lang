@@ -45,3 +45,28 @@ win = ClashupApp()
 win.show()
 sys.exit(app.exec_())
 
+
+from PyQt5.QtGui import QSyntaxHighlighter, QTextCharFormat, QColor, QFont
+from PyQt5.QtCore import QRegExp
+
+class ClashupHighlighter(QSyntaxHighlighter):
+    def __init__(self, document):
+        super().__init__(document)
+        keyword_format = QTextCharFormat()
+        keyword_format.setForeground(QColor("blue"))
+        keyword_format.setFontWeight(QFont.Bold)
+
+        keywords = ["let", "func", "return", "if_eq", "while", "for", "break", "continue", "import"]
+        self.rules = [(QRegExp(f"\\b{word}\\b"), keyword_format) for word in keywords]
+
+        string_format = QTextCharFormat()
+        string_format.setForeground(QColor("darkGreen"))
+        self.rules.append((QRegExp("\".*\""), string_format))
+
+    def highlightBlock(self, text):
+        for pattern, fmt in self.rules:
+            i = pattern.indexIn(text)
+            while i >= 0:
+                length = pattern.matchedLength()
+                self.setFormat(i, length, fmt)
+                i = pattern.indexIn(text, i + length)
