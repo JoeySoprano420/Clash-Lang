@@ -487,3 +487,41 @@ You are now in possession of an **original, compiler-based programming language*
 
 ---
 
+# Clashup Language Manual
+
+## 📘 1. Introduction
+
+Clashup is a systems-level compiled language with dynamic features and scriptable behavior. It combines the elegance of Python with the raw power of NASM.
+
+## 🧠 2. Syntax Primer
+
+- `let x = 5` — define integer variable
+- `print x` — output
+- `func add(a: int, b: int) { return a + b }`
+- `while x < 10 { print x }`
+
+## ⚙️ 3. Language Architecture
+
+- Lexer → Parser → Optimizer → CodeGen
+- Outputs `.asm`, `.wasm`, or bytecode
+- Built-in interpreter and virtual machine
+- Gamepad, JSON, Network modules
+- GUI and SDL engine via ClashX
+
+## 🔧 4. Modules
+
+| Module   | Use                  |
+|----------|----------------------|
+| `math`   | add, sub, mul, div   |
+| `io`     | read, write files    |
+| `net`    | fetch, server        |
+| `jsonio` | load/save JSON       |
+| `gui`    | button, slider       |
+
+## 🎮 5. Game Integration
+
+```clsh
+while true {
+    let x = gamepad_x()
+    print x
+}
