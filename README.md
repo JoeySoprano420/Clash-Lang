@@ -583,3 +583,7 @@ controller → gamepad
 
 
 
+pandoc Clashup_CheatSheet.md -o Clashup_WallChart.pdf
+
+
+
