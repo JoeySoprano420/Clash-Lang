@@ -669,3 +669,51 @@ if __name__ == "__main__":
     src = open("input.clsh").read()
     visualize_ast(src)
 
+import tkinter as tk
+
+def clashx_window():
+    root = tk.Tk()
+    root.title("ClashX GUI Toolkit")
+
+    def clicked(): print("👆 Button clicked!")
+
+    btn = tk.Button(root, text="Click Me", command=clicked)
+    btn.pack(pady=20)
+
+    slider = tk.Scale(root, from_=0, to=100, orient="horizontal")
+    slider.pack()
+
+    entry = tk.Entry(root)
+    entry.pack()
+
+    root.mainloop()
+
+import pygame
+
+def read_gamepad():
+    pygame.init()
+    pygame.joystick.init()
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+
+    while True:
+        pygame.event.pump()
+        x = joystick.get_axis(0)
+        y = joystick.get_axis(1)
+        a = joystick.get_button(0)
+        b = joystick.get_button(1)
+        print(f"X:{x:.2f}, Y:{y:.2f}, A:{a}, B:{b}")
+
+import shutil, os, platform
+
+def package_project():
+    target = "Clashup_Build"
+    os.makedirs(target, exist_ok=True)
+    shutil.copy("input.clsh", f"{target}/input.clsh")
+    shutil.copy("output.asm", f"{target}/output.asm")
+    if os.path.exists("output"):
+        shutil.copy("output", f"{target}/clashup_exec")
+    elif os.path.exists("output.exe"):
+        shutil.copy("output.exe", f"{target}/clashup_exec.exe")
+    print(f"📦 Packaged to: {target}/")
+
