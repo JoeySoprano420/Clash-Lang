@@ -630,3 +630,7 @@ def compile_wat_to_wasm(wat_file, wasm_file):
     else:
         print(f"❌ Compilation failed.")
 
+def autosave(self):
+    with open("autosave.clsh", "w") as f:
+        f.write(self.text.get("1.0", tk.END))
+
