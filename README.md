@@ -691,3 +691,17 @@ python3 gui_launcher.py
 
 
 
+✅ Run this on GitHub Pages or Netlify and boot Clashup in-browser.
+
+⸻
+
+🌐 Deploy Example
+	•	Upload Clashup_Supreme.img to your GitHub repo
+	•	Push index.html
+	•	Go to Settings → Pages and enable GitHub Pages on the repo
+
+🔗 Now you have a full bootable Clashup OS from within the browser.
+
+
+
+
