@@ -1007,3 +1007,40 @@ def optimize():
 def remove_dead_code():
     code_section[:] = [line for line in code_section if not line.startswith("; dead")]
 
+functions = {}
+
+def parse_func(tokens, lines, index):
+    """
+    Parses a Clashup-style function definition starting at `index` in `lines`.
+    Stores the function in the global `functions` dictionary.
+    
+    tokens: list of tokens from the function declaration line
+    lines: full list of source lines
+    index: current line index where 'func' is declared
+    """
+    if len(tokens) < 3:
+        raise SyntaxError("Invalid function declaration. Usage: func name(args) {")
+
+    name = tokens[1]
+    arg_str = tokens[2].strip("()")
+    args = [arg.strip() for arg in arg_str.split(",") if arg.strip()]
+    
+    body = []
+    i = index + 1
+
+    while i < len(lines):
+        line = lines[i].strip()
+        if line == "}":
+            break
+        body.append(lines[i])
+        i += 1
+    else:
+        raise SyntaxError(f"Function '{name}' missing closing '}}'")
+
+    functions[name] = {
+        "args": args,
+        "body": body
+    }
+
+    return i  # Return the index of the closing brace line
+
