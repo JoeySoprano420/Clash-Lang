@@ -983,3 +983,16 @@ def main():
 if __name__ == "__main__":
     main()
 
+debug_mode = True
+instr_count = 0
+
+def debug(line):
+    global instr_count
+    if debug_mode:
+        print(f"[{instr_count:04}] >> {line}")
+        instr_count += 1
+
+def emit(line):
+    debug(line)
+    code_section.append(line)
+
