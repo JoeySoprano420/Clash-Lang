@@ -202,3 +202,18 @@ Clash isn’t just a language. It’s an **engineering philosophy**:
 
 From **bootloader to REPL**, **string pool to TLS socket**, and **expression parser to dynamic symbol heap**, **Clash** is the closest you’ll get to holding the CPU’s breath in your hand.
 
+.clsh source
+   ↓
+[Lexical Analyzer]
+   ↓
+[Parser → AST]
+   ↓        ↘
+[Optimizer]  ↘ (Tree Visualizer)
+   ↓
+[Backend Choice] → .asm / .wat / .bytecode
+   ↓             ↓            ↓
+ NASM         wat2wasm     ClashVM
+   ↓             ↓            ↓
+ .o/.exe      .wasm        Runtime
+   ↓
+ Packager → GUI App / CLI Tool / Server
