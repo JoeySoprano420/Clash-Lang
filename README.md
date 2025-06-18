@@ -628,3 +628,41 @@ Push all files to github.com/JOEYSOPRANO420/Clashup
 
 
 
+# Clashup Language Manual
+
+## Table of Contents
+
+1. Introduction
+2. Language Syntax
+3. Examples
+4. How to Compile
+5. Advanced Tips
+6. Runtime System
+7. Extending the Language
+8. FAQ
+
+---
+
+## 1. Introduction
+
+Clashup is a human-friendly DSL that compiles to NASM x64.
+
+---
+
+## 2. Language Syntax
+
+- `start:` — Defines entry point
+- `print "..."` — Prints a string
+- `exit` — Ends program
+
+---
+
+## 3. Example
+
+```clsh
+start:
+    print "Hello from Clash!"
+    exit
+
+
+
