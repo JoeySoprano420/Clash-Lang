@@ -138,3 +138,12 @@ tokens = tokenize(src)
 ast = parse(tokens)
 interpret(ast)
 
+func read(path: string) {
+    import path as content
+    return parse_json(content)
+}
+
+func write(path: string, content: string) {
+    save path content
+}
+
