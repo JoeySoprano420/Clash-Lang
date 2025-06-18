@@ -1,0 +1,10 @@
+{
+  "name": "Clashup Final",
+  "entry": "examples/hello.clsh",
+  "build": {
+    "output": "bin/clashup_exec",
+    "optimize": true,
+    "platform": "cross"
+  },
+  "modules": ["math", "io", "net", "gui", "jsonio"]
+}
