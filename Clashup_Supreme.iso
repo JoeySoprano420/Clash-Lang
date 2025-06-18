@@ -1,0 +1,26 @@
+✅ All assets auto-compiled, ISO generated on push, manual + splash auto-packed.
+
+---
+
+## 🌍 2. **Deploy Codex Web + Arena**
+
+**Tech stack**:
+- Codex: Flask + HTML5 CodexTree + JS Scroll UI
+- MMO: WebSocket server + JS client with live playground
+
+### Codex Deployment:
+📁 `codex_web.py`
+
+```python
+from flask import Flask, render_template
+import json
+
+app = Flask(__name__)
+with open("codex.json") as f:
+    codex_data = json.load(f)
+
+@app.route("/")
+def index():
+    return render_template("codex.html", codex=codex_data)
+
+app.run(host="0.0.0.0", port=8080)
