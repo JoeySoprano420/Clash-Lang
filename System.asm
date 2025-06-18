@@ -11342,3 +11342,27 @@ print_int:
 section .bss
 buffer_int: resb 21
 
+
+; Assumes number in rax
+print_int:
+    mov rsi, buffer_int + 20
+    mov rcx, 10
+.next_digit:
+    xor rdx, rdx
+    div rcx
+    dec rsi
+    add dl, '0'
+    mov [rsi], dl
+    test rax, rax
+    jnz .next_digit
+    mov rax, 1
+    mov rdi, 1
+    mov rdx, buffer_int + 20
+    sub rdx, rsi
+    mov rax, 1
+    mov rdi, 1
+    syscall
+    ret
+
+section .bss
+buffer_int: resb 21
