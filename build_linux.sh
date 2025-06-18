@@ -22,3 +22,11 @@ chmod +x build_linux.sh
 
 #!/bin/bash
 ./clashup_exec
+
+#!/bin/bash
+python3 src/clashc/main.py examples/hello.clsh
+nasm -f elf64 bin/output.asm -o bin/output.o
+ld bin/output.o -o bin/clashup_exec
+chmod +x bin/clashup_exec
+./bin/clashup_exec
+
