@@ -1044,3 +1044,74 @@ def parse_func(tokens, lines, index):
 
     return i  # Return the index of the closing brace line
 
+functions = {}
+function_asm_blocks = {}
+function_args_regs = ['rdi', 'rsi', 'rdx', 'rcx', 'r8', 'r9']
+
+def parse_func(tokens, lines, index):
+    name = tokens[1]
+    arg_str = tokens[2].strip("()")
+    args = [a.strip() for a in arg_str.split(",") if a.strip()]
+    
+    body = []
+    i = index + 1
+    while i < len(lines):
+        if lines[i].strip() == "}":
+            break
+        body.append(lines[i])
+        i += 1
+    else:
+        raise SyntaxError(f"Function '{name}' missing closing brace")
+
+    functions[name] = {"args": args, "body": body}
+    return i
+
+def generate_func_asm():
+    for fname, fdata in functions.items():
+        args = fdata['args']
+        body = fdata['body']
+        asm = [f"{fname}:", "    push rbp", "    mov rbp, rsp"]
+        
+        # Assign arguments to local vars
+        for idx, arg in enumerate(args):
+            if idx < len(function_args_regs):
+                reg = function_args_regs[idx]
+                asm.append(f"    mov [{arg}], {reg}")
+                data_section.append(f"{arg}: dq 0")
+
+        # Process body
+        for line in body:
+            tokens = tokenize(line)
+            if not tokens:
+                continue
+            if tokens[0] == "let":
+                var = tokens[1]
+                val = tokens[3]
+                if val in args:
+                    asm.append(f"    mov rax, [{val}]")
+                else:
+                    asm.append(f"    mov rax, {val}")
+                asm.append(f"    mov [{var}], rax")
+                data_section.append(f"{var}: dq 0")
+            elif tokens[0] == "return":
+                ret = tokens[1]
+                if ret in args:
+                    asm.append(f"    mov rax, [{ret}]")
+                else:
+                    asm.append(f"    mov rax, {ret}")
+        
+        asm.append("    pop rbp")
+        asm.append("    ret")
+        function_asm_blocks[fname] = asm
+
+def handle_function_call(name, args):
+    for i, arg in enumerate(args):
+        reg = function_args_regs[i]
+        if arg.isdigit():
+            code_section.append(f"mov {reg}, {arg}")
+        else:
+            code_section.append(f"mov rax, [{arg}]")
+            code_section.append(f"mov {reg}, rax")
+    code_section.append(f"call {name}")
+    code_section.append("call print_int")
+
