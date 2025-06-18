@@ -18,3 +18,6 @@ GoLink /console /entry _start output.obj
 output.exe
 
 build_windows.bat
+
+@echo off
+clashup_exec.exe
