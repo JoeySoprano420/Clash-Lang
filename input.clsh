@@ -176,3 +176,10 @@ print "Hello World"
 if_eq x 5 then print "matched"
 loop print "infinite"
 
+
+func add(a, b) {
+    let result = a + b
+    return result
+}
+print add(3, 4)
+
