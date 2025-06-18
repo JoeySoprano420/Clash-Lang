@@ -11295,3 +11295,14 @@ math_add:
     add rax, rsi
     ret
 
+strlen:
+    mov rcx, 0
+strlen_loop:
+    cmp byte [rdi + rcx], 0
+    je strlen_done
+    inc rcx
+    jmp strlen_loop
+strlen_done:
+    mov rax, rcx
+    ret
+
