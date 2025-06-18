@@ -11309,3 +11309,12 @@ strlen_done:
 mov rdi, msg
 call strlen
 
+add:
+    push rbp
+    mov rbp, rsp
+    mov [result], rdi
+    add [result], rsi
+    mov rax, [result]
+    pop rbp
+    ret
+
