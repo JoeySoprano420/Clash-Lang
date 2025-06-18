@@ -634,3 +634,38 @@ def autosave(self):
     with open("autosave.clsh", "w") as f:
         f.write(self.text.get("1.0", tk.END))
 
+self.debug = tk.Text(root, height=5, bg="#111", fg="orange", insertbackground="white")
+self.debug.pack(fill=tk.X)
+
+def compile(self):
+    self.save_file()
+    result = subprocess.run(["python3", "clashc.py", self.file_path], capture_output=True, text=True)
+    self.debug.delete("1.0", tk.END)
+    self.debug.insert(tk.END, result.stdout + result.stderr)
+
+from clashc.parser import parse
+from clashc.lexer import tokenize
+import tkinter as tk
+from tkinter import ttk
+
+def visualize_ast(code):
+    tokens = tokenize(code)
+    ast = parse(tokens)
+
+    root = tk.Tk()
+    root.title("Clashup AST Viewer")
+    tree = ttk.Treeview(root)
+    tree.pack(fill=tk.BOTH, expand=True)
+
+    for i, node in enumerate(ast):
+        node_text = type(node).__name__
+        item = tree.insert('', 'end', text=f"{i}: {node_text}")
+        for attr in vars(node):
+            tree.insert(item, 'end', text=f"{attr} = {getattr(node, attr)}")
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    src = open("input.clsh").read()
+    visualize_ast(src)
+
