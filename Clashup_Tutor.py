@@ -33,3 +33,54 @@ def tutor(filename="input.clsh"):
 
 if __name__ == "__main__":
     tutor()
+
+import random
+
+quiz_bank = {
+    "What does `let x = 5` do?": {
+        "a": "Defines a function",
+        "b": "Prints a variable",
+        "c": "Declares and assigns a variable",
+        "d": "Starts a loop",
+        "answer": "c"
+    },
+    "What does `if_eq x 7` mean?": {
+        "a": "Compare and jump if true",
+        "b": "Assign 7 to x",
+        "c": "Exit the program",
+        "d": "Loop while x = 7",
+        "answer": "a"
+    },
+    "What does `breakpoint()` do?": {
+        "a": "Saves the file",
+        "b": "Halts execution for inspection",
+        "c": "Declares a variable",
+        "d": "Starts a loop",
+        "answer": "b"
+    }
+}
+
+def take_quiz():
+    print("🎓 Clashup Quiz Begins!")
+    score = 0
+    for question, opts in quiz_bank.items():
+        print("\n" + question)
+        for key in "abcd":
+            print(f"  {key}) {opts[key]}")
+        ans = input("Your answer: ").lower()
+        if ans == opts["answer"]:
+            print("✅ Correct!")
+            score += 1
+        else:
+            print(f"❌ Incorrect. Correct: {opts['answer']}")
+    print(f"\n🎯 Final Score: {score}/{len(quiz_bank)}")
+
+if __name__ == "__main__":
+    print("Choose an option:\n1) Explain .clsh\n2) Take Quiz")
+    choice = input("> ")
+    if choice == "1":
+        from clashc import tutor
+        tutor()
+    elif choice == "2":
+        take_quiz()
+
