@@ -86,3 +86,25 @@ if __name__ == "__main__":
     else:
         print("Usage: fetch <name> <url> [version]")
 
+import random, string
+
+def obfuscate_asm(filename="output.asm"):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+
+    obf_lines = []
+    for line in lines:
+        obf_lines.append(line)
+        if "mov" in line or "cmp" in line:
+            obf_lines.append(f"{gen_junk_label()}:\n  nop\n  nop\n")
+    with open("output_obf.asm", 'w') as f:
+        f.writelines(obf_lines)
+    print("🔐 Obfuscation complete: output_obf.asm")
+
+def gen_junk_label():
+    return "_junk_" + ''.join(random.choices(string.ascii_letters, k=8))
+
+# CLI use
+if __name__ == "__main__":
+    obfuscate_asm()
+
