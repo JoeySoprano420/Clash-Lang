@@ -547,3 +547,86 @@ elif c == "5":
 elif c == "6":
     import pkgman; pkgman.install(input("Install package> "))
 
+import tkinter as tk
+from tkinter import filedialog, messagebox
+import subprocess, os
+
+class ClashupStudio:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Clashup Studio IDE")
+        self.text = tk.Text(root, bg="black", fg="lime", insertbackground="white")
+        self.text.pack(fill=tk.BOTH, expand=True)
+
+        menubar = tk.Menu(root)
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="New", command=self.new_file)
+        filemenu.add_command(label="Open", command=self.open_file)
+        filemenu.add_command(label="Save", command=self.save_file)
+        filemenu.add_command(label="Compile", command=self.compile)
+        filemenu.add_command(label="Run", command=self.run)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=root.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+
+        self.root.config(menu=menubar)
+        self.file_path = "input.clsh"
+
+    def new_file(self):
+        self.text.delete("1.0", tk.END)
+
+    def open_file(self):
+        self.file_path = filedialog.askopenfilename(defaultextension=".clsh")
+        with open(self.file_path, "r") as f:
+            self.text.delete("1.0", tk.END)
+            self.text.insert(tk.END, f.read())
+
+    def save_file(self):
+        with open(self.file_path, "w") as f:
+            f.write(self.text.get("1.0", tk.END))
+
+    def compile(self):
+        self.save_file()
+        subprocess.call(["python3", "clashc.py", self.file_path])
+        messagebox.showinfo("Compile", "✅ Compilation complete.")
+
+    def run(self):
+        subprocess.call(["./output"])
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    ClashupStudio(root)
+    root.mainloop()
+
+class ClashVMStack:
+    def __init__(self):
+        self.stack = []
+        self.pc = 0
+        self.instructions = []
+
+    def load(self, bytecode):
+        self.instructions = bytecode
+
+    def run(self):
+        while self.pc < len(self.instructions):
+            op = self.instructions[self.pc]
+            if op[0] == "PUSH":
+                self.stack.append(op[1])
+            elif op[0] == "ADD":
+                b, a = self.stack.pop(), self.stack.pop()
+                self.stack.append(a + b)
+            elif op[0] == "PRINT":
+                print(self.stack.pop())
+            elif op[0] == "HLT":
+                break
+            self.pc += 1
+
+import subprocess
+
+def compile_wat_to_wasm(wat_file, wasm_file):
+    result = subprocess.run(["wat2wasm", wat_file, "-o", wasm_file])
+    if result.returncode == 0:
+        print(f"✅ Compiled {wat_file} to {wasm_file}")
+    else:
+        print(f"❌ Compilation failed.")
+
