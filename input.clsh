@@ -192,3 +192,11 @@ while x < 5 {
 input name
 print name
 
+func add(a, b) {
+    let result = a + b
+    return result
+}
+
+print add(3, 4)
+
+
