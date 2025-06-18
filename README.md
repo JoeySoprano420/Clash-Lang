@@ -232,3 +232,19 @@ From **bootloader to REPL**, **string pool to TLS socket**, and **expression par
 | `package.py`       | Deployment Build Tool              |
 
 
+| Feature             | Status |
+| ------------------- | ------ |
+| .clsh Compiler      | ✅ Done |
+| Bytecode VM         | ✅ Done |
+| WASM Binary         | ✅ Done |
+| GUI Launcher/IDE    | ✅ Done |
+| JSON I/O            | ✅ Done |
+| Network I/O         | ✅ Done |
+| Gamepad Input       | ✅ Done |
+| SDL Engine          | ✅ Done |
+| Docs & Licenses     | ✅ Done |
+| VSCode Integration  | ✅ Done |
+| Deployment Packager | ✅ Done |
+| AST Debug Viewer    | ✅ Done |
+
+
