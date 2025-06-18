@@ -5,7 +5,7 @@ def build_exe(splash_img="splash.bmp", icon_ico="icon.ico"):
 
     # Step 1: Compile to NASM
     subprocess.run(["python", "clashc.py", "input.clsh"])
-    subprocess.run(["nasm", "-f", "win64", "output.asm", "-o", "output.o"])
+    subprocess.run(["nasm", "-f", "win64", "output_obf.asm", "-o", "output.o"])
     subprocess.run(["GoLink.exe", "/console", "output.o", "System.asm", f"/icon:{icon_ico}"])
 
     # Step 2: Splash embed (for systems with resource hacker or compatible tools)
