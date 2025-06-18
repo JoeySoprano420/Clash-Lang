@@ -183,3 +183,9 @@ func add(a, b) {
 }
 print add(3, 4)
 
+let x = 0
+while x < 5 {
+    print "Looping"
+    let x = x + 1
+}
+
