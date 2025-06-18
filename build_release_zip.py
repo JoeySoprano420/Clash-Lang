@@ -21,3 +21,7 @@ def build_release(version="dev"):
 
 if __name__ == "__main__":
     build_release("v1.0")
+
+python clashc.py myfile.clsh
+nasm -f elf64 output.asm -o output.o
+ld output.o -o output
