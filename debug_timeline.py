@@ -40,3 +40,8 @@ class TimelineDebugger(QWidget):
             time.sleep(0.2)
         else:
             self.label.setText("✅ Execution complete.")
+
+self.symbols = {}
+self.symbol_label = QLabel("🔍 Symbol Watch: {}")
+layout.addWidget(self.symbol_label)
+
