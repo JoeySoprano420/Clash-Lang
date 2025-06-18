@@ -1119,3 +1119,140 @@ generate_func_asm()
 for block in function_asm_blocks.values():
     code_section.extend(block)
 
+import os
+
+functions = {}
+variables = {}
+imported_files = set()
+loop_stack = []
+
+def compile_clsh(filename):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+
+    asm = ['section .data']
+    asm += ['buffer db 256', 'buffer_len equ $-buffer']
+    asm += ['section .text', 'global _start', '_start:']
+
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        if not line or line.startswith("//"):
+            i += 1
+            continue
+        tokens = line.split()
+
+        if tokens[0] == "func":
+            i = parse_func(tokens, lines, i)
+        elif tokens[0] == "import":
+            asm += handle_import(line)
+            i += 1
+        elif tokens[0] == "for":
+            loop_asm, new_i = parse_for(tokens, lines, i)
+            asm += loop_asm
+            i = new_i + 1
+        else:
+            asm += translate_line(line)
+            i += 1
+
+    asm += ['call exit_program']
+    asm = optimize_asm(asm)
+    write_output(asm)
+
+def parse_func(tokens, lines, index):
+    name = tokens[1]
+    args = tokens[2].strip("()").split(',')
+    body = []
+    i = index + 1
+    while not lines[i].strip().startswith("}"):
+        body.append(lines[i])
+        i += 1
+    functions[name] = (args, body)
+    return i
+
+def parse_for(tokens, lines, index):
+    var_name = tokens[1]
+    range_vals = tokens[3].strip("range()").split(',')
+    start, end = int(range_vals[0]), int(range_vals[1])
+
+    loop_label = f"loop_{index}"
+    end_label = f"endloop_{index}"
+    loop_stack.append((loop_label, end_label))
+
+    body = []
+    i = index + 1
+    while not lines[i].strip().startswith("}"):
+        body.append(lines[i].strip())
+        i += 1
+
+    asm = [f"mov [{var_name}], {start}", f"{loop_label}:", f"cmp [{var_name}], {end}", f"jge {end_label}"]
+    for b in body:
+        asm += translate_line(b)
+    asm += [f"inc [{var_name}]", f"jmp {loop_label}", f"{end_label}:"]
+    loop_stack.pop()
+    return asm, i
+
+def handle_import(line):
+    filename = line.split("import")[1].strip().strip('"')
+    if filename in imported_files:
+        return []
+    imported_files.add(filename)
+    asm = []
+    with open(filename, 'r') as f:
+        for line in f:
+            if not line.strip() or line.startswith("//"):
+                continue
+            asm += translate_line(line.strip())
+    return asm
+
+def translate_line(line):
+    tokens = line.split()
+    if line.startswith("let"):
+        var = tokens[1].strip(":,")
+        val = tokens[-1]
+        variables[var] = val
+        return [f"mov [{var}], {val}"]
+    if line.startswith("print("):
+        text = line.split("print(")[1].rstrip(")")
+        return [f'mov rdi, {text}', 'call print_string']
+    if line.startswith("input("):
+        var = line.split("input(")[1].rstrip(")")
+        return [f'mov rdi, {var}', 'call read_input']
+    if line.startswith("if_eq"):
+        var, val = line.split()[1:3]
+        label = f"endif_{var}_{val}"
+        return [f"cmp [{var}], {val}", f"jne {label}"]
+    if line.startswith("while"):
+        cond = line.split()[1:]
+        label = f"while_start_{cond[0]}"
+        end = f"while_end_{cond[0]}"
+        loop_stack.append((label, end))
+        return [f"{label}:", f"cmp [{cond[0]}], {cond[2]}", f"jge {end}"]
+    if line.startswith("break"):
+        return [f"jmp {loop_stack[-1][1]}"]
+    if line.startswith("continue"):
+        return [f"jmp {loop_stack[-1][0]}"]
+    if line.startswith("}"):
+        if loop_stack:
+            return [f"jmp {loop_stack[-1][0]}", f"{loop_stack[-1][1]}:"]
+        return []
+    if "breakpoint()" in line:
+        return ["int3"]
+    if "symbol_dump()" in line:
+        return [f"; vars: {variables}"]
+    return []
+
+def optimize_asm(asm_lines):
+    optimized = []
+    for i in range(len(asm_lines)):
+        if i + 1 < len(asm_lines):
+            if asm_lines[i].startswith("mov") and asm_lines[i] == asm_lines[i+1]:
+                continue
+        optimized.append(asm_lines[i])
+    return optimized
+
+def write_output(asm):
+    with open("output.asm", 'w') as f:
+        for line in asm:
+            f.write(line + '\n')
+
