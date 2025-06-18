@@ -543,3 +543,25 @@ You now have:
 
 ✅ Real packaging + install system for Win/Linux/macOS
 
+
+
+
+# 🧠 Clashup Code Wall Chart
+
+## 🧾 BASICS
+| Syntax          | Example               |
+|----------------|------------------------|
+| Variable        | `let x = 5`           |
+| Print           | `print x`             |
+| Condition       | `if_eq x 10 then ...` |
+| Loop            | `while x < 5 {}`      |
+| Exit            | `exit`                |
+
+## 🔧 FUNCTIONS
+```clsh
+func add(a: int, b: int) {
+  return a + b
+}
+
+
+
