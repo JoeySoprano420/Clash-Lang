@@ -147,3 +147,15 @@ func write(path: string, content: string) {
     save path content
 }
 
+func fetch(url: string) {
+    let response = http_get(url)
+    print response
+}
+
+func serve(port: int) {
+    while true {
+        let conn = accept(port)
+        send conn "Clashup Server Ready!"
+    }
+}
+
